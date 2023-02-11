@@ -13,7 +13,6 @@ import qp.scs.dto.request.NewCustomerRequestDTO;
 import qp.scs.dto.response.LoginResponseDTO;
 import qp.scs.model.Customer;
 import qp.scs.model.User;
-import qp.scs.model.api.Entity;
 import qp.scs.repository.CustomerRepository;
 import qp.scs.repository.UserRepository;
 import qp.scs.repository.CustRepository;
@@ -44,11 +43,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 
 @Service
 @Transactional
-public class CustomerService extends BaseService {
+public class CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -74,7 +74,7 @@ public class CustomerService extends BaseService {
 		customer.buildingFloorUnit=request.buildingFloorUnit;
 		customer.postcode=request.postcode;
 		
-		save(customer);
+		customerRepository.save(customer);
 		
 	}
 	
@@ -126,14 +126,15 @@ public class CustomerService extends BaseService {
 
 	public List<Customer> getCustomers() {
 		
-	
-		return  customerRepository.getCustomers();		
+		List<Customer> result = new ArrayList<Customer>();
+		  customerRepository.findAll().forEach(result::add);
+		  return result;
 	}
 	
 	public Customer getCustomerById(String customerId) {
 		
-		
-		return  customerRepository.getCustomerById(customerId);		
+		Optional<Customer> custOpt = customerRepository.findById(customerId);	
+		return custOpt.get();
 	}
 
 }

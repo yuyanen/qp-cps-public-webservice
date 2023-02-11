@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import qp.scs.dto.request.LoginRequestDTO;
 import qp.scs.dto.response.LoginResponseDTO;
 import qp.scs.model.User;
-import qp.scs.model.api.Entity;
 import qp.scs.repository.UserRepository;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +27,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 @Transactional
-public class UserService extends BaseService {
+public class UserService{
 
 	private static Integer expireTokenHrs;
 	
@@ -64,9 +63,12 @@ public class UserService extends BaseService {
 	
 	public User getUser(String username) {
 		
+		
 		User u = userRepository.getUserByUserName(username);
 
+		User u2 = userRepository.findById(u.id).get();
+
 		
-		return u;
+		return u2;
 	}
 }

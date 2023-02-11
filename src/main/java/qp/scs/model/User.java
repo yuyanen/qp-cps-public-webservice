@@ -9,7 +9,7 @@ import java.util.Date;
 
 
 @Entity
-public class User extends qp.scs.model.Entity{
+public class User {
 
 	public Long getId() {
 		return id;

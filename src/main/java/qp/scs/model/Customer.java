@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Customer extends qp.scs.model.Entity{
+public class Customer {
 
 	
 
