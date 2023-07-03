@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>qp</groupId>
-	<artifactId>scs-admin-webservice</artifactId>
+	<artifactId>cps-public-webservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>scs-admin-webservice</name>
-	<description>scs admin webservice</description>
+	<name>cps-public-webservice</name>
+	<description>cps public webservice</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
