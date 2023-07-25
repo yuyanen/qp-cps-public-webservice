@@ -66,7 +66,7 @@ public class UserService{
 		
 		User u = userRepository.getUserByUserName(username);
 
-		User u2 = userRepository.findById(u.id).get();
+		User u2 = userRepository.findById(u.getId().longValue()).get();
 
 		
 		return u2;

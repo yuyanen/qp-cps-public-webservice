@@ -4,12 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Column;
 
 @Entity
 public class Customer {
 
 	
-
+	@Column(length = 191)
 	@Id
 	public String id;
 

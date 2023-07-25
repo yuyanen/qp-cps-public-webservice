@@ -64,7 +64,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		logger.info(message);
 		// logger.info(Codes.AuthenticationResponse.AUTHENTICATED);
 
-		return new CustomAuthenticationToken(user.getUsername(), user, selectedRoleCode, authorities);
+		return new CustomAuthenticationToken(user.getLoginId(), user, selectedRoleCode, authorities);
 	}
 
 	@Override

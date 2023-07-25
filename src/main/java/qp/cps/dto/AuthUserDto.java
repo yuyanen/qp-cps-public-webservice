@@ -24,10 +24,10 @@ public class AuthUserDto {
 		
 	public static AuthUserDto buildFromUser(User subject) {
 		AuthUserDto dto = new AuthUserDto();
-		dto.setLoginId(subject.getUsername());
-		dto.setFirstName(subject.getFirstName()!= null ?subject.getFirstName():"");
-		dto.setLastName(subject.getLastName()!= null ?subject.getLastName():"");
-		dto.setLastLoginDate(subject.getLastLoginDt());
+		dto.setLoginId(subject.getLoginId());
+//		dto.setFirstName(subject.getFirstName()!= null ?subject.getFirstName():"");
+//		dto.setLastName(subject.getLastName()!= null ?subject.getLastName():"");
+//		dto.setLastLoginDate(subject.getLastLoginDt());
 		
 //		if(subject.getResourceList() != null) {
 //			dto.setPermissions(new ArrayList<String>());

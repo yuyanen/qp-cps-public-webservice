@@ -29,7 +29,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	 * @param token
 	 * @return
 	 */
-	@Query("select u from User u where u.username = :username")
+	@Query("select u from User u where u.name = :username")
 	public User getUserByUserName(@Param("username") String username);
 
 }

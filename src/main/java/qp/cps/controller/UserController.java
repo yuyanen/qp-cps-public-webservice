@@ -71,7 +71,7 @@ public class UserController  extends BaseController {
 			HttpServletResponse response) {
 		 if (subject == null) {
 			logger.info("Non-active status for user: {}",  dto.getLoginId());
-			return new AuthResponseDto(false, Codes.AuthenticationResponse.USER_INACTIVE, Messages.Errors.LOGIN_NO_ACCESS,null);
+			return new AuthResponseDto(false, Codes.AuthenticationResponse.USER_NO_ACCESS, Messages.Errors.LOGIN_NO_ACCESS,null);
 		}
 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");

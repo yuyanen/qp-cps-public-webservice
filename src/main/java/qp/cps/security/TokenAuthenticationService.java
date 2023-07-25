@@ -70,9 +70,9 @@ public class TokenAuthenticationService {
 //		}
 
 		refreshAuthentication(response, principal, resources);
-		String loginId = user.getUsername();
+		String loginId = user.getLoginId();
 
-		Authentication authentication = new CustomAuthenticationToken(loginId, principal, user.getRole(), resources);
+		Authentication authentication = new CustomAuthenticationToken(loginId, principal, user.getLoginId(), resources);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		getSessionMap(request).put(loginId, authentication);
 	}
@@ -83,7 +83,7 @@ public class TokenAuthenticationService {
 		Set<GrantedAuthority> authorities = Sets.newHashSet(authentication.getAuthorities());
 
 		refreshAuthentication(response, authentication.getPrincipal(), authorities);
-		String loginId = user.getUsername();
+		String loginId = user.getLoginId();
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		getSessionMap(request).put(loginId, authentication);
@@ -96,10 +96,10 @@ public class TokenAuthenticationService {
 		}
 
 		User user = (User) principal;
-		String role =user.getRole();
+		String role =user.getLoginId();
 		AuthUserDto dto = AuthUserDto.buildFromUser(user);
 		long expirationTime = System.currentTimeMillis() + EXPIRATIONTIME;
-		String JWT = Jwts.builder().claim(RESOURCES, uris).claim("permissions", dto.getPermissions()).claim("resourcesIds", dto.getResourcesIds()).claim("loginId", user.getUsername()).claim(ROLE, role).setSubject(user.getUsername()).claim("firstName", user.getFirstName()).claim("lastName", user.getLastName()).claim("lastLoginDate", user.getLastLoginDt()).setIssuedAt(new Date())
+		String JWT = Jwts.builder().claim(RESOURCES, uris).claim("permissions", dto.getPermissions()).claim("resourcesIds", dto.getResourcesIds()).claim("loginId", user.getLoginId()).claim(ROLE, role).setSubject(user.getLoginId()).claim("name", user.getName()).claim("loginId", user.getLoginId()).setIssuedAt(new Date())
 				.setExpiration(new Date(expirationTime)).signWith(SignatureAlgorithm.HS512, SECRET).compact();
 		response.setHeader(Codes.Headers.APP_TOKEN, JWT);
 	}
@@ -147,10 +147,10 @@ public class TokenAuthenticationService {
 				if (auth != null) {
 					// session exist, checks if token belongs to an older login (issued before last login date) as multiple login sessions is not allowed
 					User user = (User) auth.getPrincipal();
-					if (user.getLastLoginDt() != null && claims.getIssuedAt() != null) {
-						if (user.getLastLoginDt() != null && claims.getIssuedAt() != null) {
+					if (user.getLastLoginDate() != null && claims.getIssuedAt() != null) {
+						if (user.getLastLoginDate() != null && claims.getIssuedAt() != null) {
 							LocalDateTime issuedDate = LocalDateTime.ofInstant(claims.getIssuedAt().toInstant(), ZoneId.systemDefault());
-							LocalDateTime lastLoginDt = LocalDateTime.ofInstant(user.getLastLoginDt().toInstant(), ZoneId.systemDefault());
+							LocalDateTime lastLoginDt = user.getLastLoginDate();
 							if (issuedDate.isBefore(lastLoginDt.withNano(0))) {
 								logger.error("User {} (Role {}) uses a token belonging to an older login.", loginId, selectedRole);
 								throw new SessionAuthenticationException(Messages.Errors.AUTH_MULTI_SESSIONS);
