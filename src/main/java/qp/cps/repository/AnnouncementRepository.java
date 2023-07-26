@@ -45,7 +45,7 @@ public class AnnouncementRepository extends BaseRepository {
 		addDtoProjections(dc, AnnouncementDto.class);
 
 		Boolean toPaginate = Boolean.TRUE;
-		if (searchDto.pageSize == null) {
+		if (searchDto.getPageSize() == null) {
 			return search(dc, searchDto, Boolean.FALSE);
 		}
 

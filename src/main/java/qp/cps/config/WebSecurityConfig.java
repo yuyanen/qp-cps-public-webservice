@@ -36,8 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/*.*.js")
 		.antMatchers(HttpMethod.GET, "/*.map")
 		.antMatchers(HttpMethod.GET, "/*.*.map")
-		.antMatchers(HttpMethod.POST, "/api/protected/users/**")
-		.antMatchers(HttpMethod.GET, "/api/announcements/**");	
+		.antMatchers(HttpMethod.GET, "/api/**")
+		.antMatchers(HttpMethod.POST, "/api/**");
+
 		}
 	
 //	public WebMvcConfigurer corsConfigurer() {
