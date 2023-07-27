@@ -52,56 +52,41 @@ public class AnnouncementController extends BaseController {
 //	return announcementDtoList;
 //	}
 
-	@RequestMapping(value = "/search-bulletin-board/view/{bulletinUnitId}", method = RequestMethod.GET)
-	public AnnouncementDto getBulletinUnitView(@PathVariable Integer bulletinUnitId) {
-		AnnouncementDto announcementDto = announcementRepository.getBulletinView(bulletinUnitId);
-
-		List<Integer> fileIds = new ArrayList<Integer>();
-		PublicAnnouncement announcement = new PublicAnnouncement();
-		announcement = announcementRepository.get(PublicAnnouncement.class, announcementDto.id);
-		for (File file : announcement.getFiles()) {
-			fileIds.add(file.getId());
-		}
-		if (fileIds.size() > 0) {
-			List<FileDto> fileDtos = announcementRepository.getAnnouncementAttachment(fileIds);
-			announcementDto.attachments = fileDtos;
-		}
-
-		return announcementDto;
-	}
-	
+//	@RequestMapping(value = "/search-bulletin-board/view/{bulletinUnitId}", method = RequestMethod.GET)
+//	public AnnouncementDto getBulletinUnitView(@PathVariable Integer bulletinUnitId) {
+//		AnnouncementDto announcementDto = announcementRepository.getBulletinView(bulletinUnitId);
+//
+//		List<Integer> fileIds = new ArrayList<Integer>();
+//		PublicAnnouncement announcement = new PublicAnnouncement();
+//		announcement = announcementRepository.get(PublicAnnouncement.class, announcementDto.id);
+//		for (File file : announcement.getFiles()) {
+//			fileIds.add(file.getId());
+//		}
+//		if (fileIds.size() > 0) {
+//			List<FileDto> fileDtos = announcementRepository.getAnnouncementAttachment(fileIds);
+//			announcementDto.attachments = fileDtos;
+//		}
+//
+//		return announcementDto;
+//	}
+//	
+	// my own method
 	@RequestMapping(value = "/search-bulletin-board", method = RequestMethod.GET)
-	public ResultDto<AnnouncementDto> searchAnnouncements2(BulletinSearchDto searchDto) {
+	public ResultDto<AnnouncementDto> searchAnnouncements(BulletinSearchDto searchDto){
 
 	    PageModel<PublicAnnouncement> resultModel = anncService.searchAnnouncements(searchDto);
 	    logger.info("testing url " +searchDto.bulletinType);
 
 	    // populate and return ResultDTO
 	    List<PublicAnnouncement> results = resultModel.getResult();
-	    logger.info("testing url " +results.get(0).getImageFile().getUrl());
+//	    logger.info("testing url " +results.get(0).getImageFile().getUrl());
         List<AnnouncementDto> finalResults = Lists.newArrayList();
    
         for (PublicAnnouncement announcement : results) {
         	AnnouncementDto dto = new AnnouncementDto(announcement);
             finalResults.add(dto);
         }        
-//        AnnouncementDto annoDto = new AnnouncementDto();
-//        annoDto.id=1;
-//        annoDto.buttonText="Meow";
-//        annoDto.title ="Business";
-//        annoDto.imageUrl="https://hdb-cps-public.s3.ap-southeast-1.amazonaws.com/DOC_ANNOUNCEMENT_BANNER/188";
-//        annoDto.type ="ANNC_TOP_BANNER";
-//        
-//        AnnouncementDto annoDto2 = new AnnouncementDto();
-//        annoDto2.id=2;
-//        annoDto2.buttonText="Meow 2";
-//        annoDto2.title ="Business 2";
-//        annoDto2.imageUrl="https://hdb-cps-public.s3.ap-southeast-1.amazonaws.com/DOC_ANNOUNCEMENT_BANNER/188";
-//        annoDto2.type ="ANNC_TOP_BANNER";
-//        
-//        finalResults.add(annoDto);
-//        finalResults.add(annoDto2);
-
+        
 		ResultDto<AnnouncementDto> resultDTO = new ResultDto<>();
 		resultDTO.models = finalResults;
 
@@ -109,10 +94,19 @@ public class AnnouncementController extends BaseController {
 		resultDTO.items = items;
 		finalResults.forEach(model -> items.add(model));
 
-		resultDTO.total = 3;
-		resultDTO.noOfPages = 1;
+		resultDTO.total = (int) resultModel.getTotalCount();
+		resultDTO.noOfPages = Math.max(0,resultModel.getCurrentPage()+1);
 		return resultDTO;
 
+	}
+
+	@RequestMapping(value = "/search-bulletin-board/view/{bulletinUnitId}", method = RequestMethod.GET)
+	public AnnouncementDto getBulletinUnitView(@PathVariable Integer bulletinUnitId) {
+		PublicAnnouncement annc = anncService.getBulletinView(bulletinUnitId);
+
+    	AnnouncementDto dto = new AnnouncementDto(annc);
+
+		return dto;
 	}
 
 }

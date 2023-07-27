@@ -16,6 +16,7 @@ import qp.cps.model.User;
 import qp.cps.repository.AnncRepository;
 import qp.cps.repository.UserRepository;
 import qp.cps.repository.CustRepository;
+import qp.cps.dto.publicsite.AnnouncementDto;
 import qp.cps.dto.publicsite.BulletinSearchDto;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -26,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 //import org.joda.time.Period;
+//import org.joda.time.LocalDate;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -45,7 +47,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.Optional;
 import qp.cps.model.PublicAnnouncement;
-
+import java.time.LocalDate;
 
 @Service
 @Transactional
@@ -63,26 +65,23 @@ public class AnnouncementService {
 
 	public PageModel<PublicAnnouncement> searchAnnouncements(BulletinSearchDto searchDto) {
 		Integer pageSize = searchDto.getPageSize();
-		Integer pageNo = searchDto.getStartIndex();
+		Integer pageNo = Math.max(0,searchDto.getPage()-1);
 
 		Pageable pagesetting = PaginationUtil.getPageable(pageNo, pageSize);
-		
-		new ArrayList<String>();
-		Date requestDateFrom = null;
-		Date requestDateTo = null;
-		Date approveDateFrom = null;
-		Date approveDateTo = null;
-		
-			
 
-		Page<PublicAnnouncement> pageResult = anncRepository.searchAnnouncements(pagesetting);
+		//Page<PublicAnnouncement> pageResult = anncRepository.searchAnnouncements(LocalDate.now(), searchDto.publishDateFrom,searchDto.publishDateTo,pagesetting);
+		Page<PublicAnnouncement> pageResult = anncRepository.searchAnnouncements(LocalDate.now(),pagesetting);
 
 		List<PublicAnnouncement> resultModelList = pageResult.getContent();
 
 		return new PageModel<PublicAnnouncement>(resultModelList, pageResult.getTotalElements(), pageResult.getNumber(),
 				pageResult.getSize());
 	}
-
+	
+	public PublicAnnouncement getBulletinView(Integer bulletinUnitId) {
+		Optional<PublicAnnouncement> publicAnnc=anncRepository.findById(bulletinUnitId);
+		return publicAnnc.get();
+	}
 
 
 }

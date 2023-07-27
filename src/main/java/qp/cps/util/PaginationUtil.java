@@ -7,7 +7,7 @@ import org.springframework.data.domain.Sort;
 public class PaginationUtil{
     
 	private static int defaultPageIndex = 0;
-	private static int defaultPageSize = 10;
+	private static int defaultPageSize = 2;
 	
 	public PaginationUtil(){
 		
