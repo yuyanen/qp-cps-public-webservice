@@ -48,7 +48,9 @@ public class AnnouncementController extends BaseController {
 //	@RequestMapping(value = "/search-bulletin-board", method = RequestMethod.GET)
 //	public ResultDto<AnnouncementDto> searchAnnouncements(BulletinSearchDto searchDto) {
 //		ResultDto<AnnouncementDto> announcementDtoList = announcementRepository.searchAnnouncements(searchDto);
-//
+//		List<Integer> fileIds = new ArrayList<Integer>();
+//		fileIds.add(3);
+//		Integer b = fileIds.get(100);
 //	return announcementDtoList;
 //	}
 
